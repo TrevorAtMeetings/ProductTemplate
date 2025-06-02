@@ -44,8 +44,9 @@ async function startServer() {
     await sequelize.sync();
     console.log("Database models synchronized.");
 
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Backend server is running on port ${PORT}`);
+      console.log(`Server accessible at: http://0.0.0.0:${PORT}`);
     });
   } catch (error) {
     if (error.code === "EADDRINUSE") {

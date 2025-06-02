@@ -1,9 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Configure axios defaults
-axios.defaults.baseURL = 'http://localhost:3001';
+// Configure axios base URL for Replit environment
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3001'
+  : `${window.location.protocol}//${window.location.hostname}`;
+
+axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.withCredentials = true;
+
+console.log('API Base URL configured as:', API_BASE_URL);
 
 const AuthContext = createContext(null);
 
