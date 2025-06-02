@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Configure axios defaults
+axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.withCredentials = true;
+
 const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
@@ -23,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', {
+      const response = await axios.post('/api/auth/login', {
         email,
         password,
       });
@@ -43,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/signup', {
+      const response = await axios.post('/api/auth/signup', {
         email,
         password,
       });
