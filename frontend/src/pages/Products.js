@@ -33,7 +33,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/products${search ? `?search=${search}` : ''}`);
+      const response = await axios.get(`/api/products${search ? `?search=${search}` : ''}`);
       setProducts(response.data);
     } catch (err) {
       setError('Error fetching products');
@@ -80,9 +80,9 @@ const Products = () => {
     e.preventDefault();
     try {
       if (editingProduct) {
-        await axios.put(`http://localhost:3001/api/products/${editingProduct.id}`, formData);
+        await axios.put(`/api/products/${editingProduct.id}`, formData);
       } else {
-        await axios.post('http://localhost:3001/api/products', formData);
+        await axios.post('/api/products', formData);
       }
       handleClose();
       fetchProducts();
@@ -94,7 +94,7 @@ const Products = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`http://localhost:3001/api/products/${id}`);
+        await axios.delete(`/api/products/${id}`);
         fetchProducts();
       } catch (err) {
         setError('Error deleting product');
