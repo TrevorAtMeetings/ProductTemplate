@@ -53,7 +53,7 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <TextField
             label="Email"
-            type="email"
+           // type="email"
             fullWidth
             margin="normal"
             value={email}

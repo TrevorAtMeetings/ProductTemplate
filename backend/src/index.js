@@ -6,6 +6,10 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const authMiddleware = require('./middleware/auth');
 
+// Debug logging
+console.log('Current DATABASE_URL:', process.env.DATABASE_URL);
+console.log('Current NODE_ENV:', process.env.NODE_ENV);
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -39,10 +43,15 @@ async function startServer() {
     console.log('Database models synchronized.');
 
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Backend server is running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    if (error.code === 'EADDRINUSE') {
+      console.error(`Port ${PORT} is already in use. Please make sure no other service is using this port.`);
+    } else {
+      console.error('Unable to connect to the database:', error);
+    }
+    process.exit(1);
   }
 }
 

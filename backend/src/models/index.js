@@ -1,34 +1,32 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize(
-  process.env.POSTGRES_DB,
-  process.env.POSTGRES_USER,
-  process.env.POSTGRES_PASSWORD,
-  {
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    dialect: 'postgres',
-    logging: false,
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  logging: false,
+  schema: 'ecommerce',
+  define: {
     schema: 'ecommerce',
-    define: {
-      schema: 'ecommerce',
-    }
+  },
+  dialectOptions: {
+    ssl: process.env.NODE_ENV === 'production' ? {
+      require: true,
+      rejectUnauthorized: false
+    } : false
   }
-);
+});
 
 // Create schema if it doesn't exist
 sequelize.beforeConnect(async (config) => {
-  const tempSequelize = new Sequelize(
-    process.env.POSTGRES_DB,
-    process.env.POSTGRES_USER,
-    process.env.POSTGRES_PASSWORD,
-    {
-      host: process.env.POSTGRES_HOST,
-      port: process.env.POSTGRES_PORT,
-      dialect: 'postgres',
-      logging: false
+  const tempSequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    logging: false,
+    dialectOptions: {
+      ssl: process.env.NODE_ENV === 'production' ? {
+        require: true,
+        rejectUnauthorized: false
+      } : false
     }
-  );
+  });
 
   try {
     await tempSequelize.query('CREATE SCHEMA IF NOT EXISTS ecommerce;');
